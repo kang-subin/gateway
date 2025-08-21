@@ -2,7 +2,7 @@ from typing import Dict
 from fastapi import WebSocket
 import uuid
 
-class ConnectionManager:
+class ConnectionService:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
 
@@ -15,12 +15,3 @@ class ConnectionManager:
     def disconnect(self, session_id: str):
         if session_id in self.active_connections:
             del self.active_connections[session_id]
-
-    async def send_to_one(self, session_id: str, message: str):
-        if session_id in self.active_connections:
-            websocket = self.active_connections[session_id]
-            await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections.values():
-            await connection.send_text(message)
