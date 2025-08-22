@@ -5,9 +5,9 @@ from websocket_service.models.websocket_response import WebSocketResponse
 router = APIRouter()
 connection_service = ConnectionService()
 
+
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-
     session_id = await connection_service.connect(websocket)
     try:
         while True:
@@ -18,6 +18,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 sessionId=session_id,
                 data=data
             )
-    #연결해제
+    # 연결해제
     except WebSocketDisconnect:
         connection_service.disconnect(session_id)
